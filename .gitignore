@@ -1,0 +1,14 @@
+*.log
+*.pyc
+.cache/
+.coverage
+.idea/
+.vscode/
+twitter_years.egg-info/
+build/
+dist/
+docs/build/
+venv/
+wheelhouse/
+
+*.db
