@@ -5,8 +5,10 @@ import ujson
 import os
 import click
 
+from collections import OrderedDict
+
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import create_engine, event, Column, Integer, String
+from sqlalchemy import create_engine, event, Column, Integer, String, func
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -32,7 +34,7 @@ class Year(Base):
 
     prefix = Column(String, nullable=False)
 
-    year = Column(Integer, nullable=False)
+    year = Column(Integer, nullable=False, index=True)
 
     suffix = Column(String, nullable=False)
 
@@ -48,6 +50,19 @@ class Year(Base):
 
                 session.commit()
                 print(path)
+
+    @classmethod
+    def year_counts(cls):
+        """Get (year, count) pairs.
+        """
+        query = (
+            session
+            .query(cls.year, func.count())
+            .group_by(cls.year)
+            .order_by(cls.year)
+        )
+
+        return OrderedDict(query.all())
 
 
 @click.group()
