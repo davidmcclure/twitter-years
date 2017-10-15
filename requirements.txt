@@ -3,3 +3,5 @@ ipython
 peewee
 jupyter
 ujson
+sqlalchemy
+click
